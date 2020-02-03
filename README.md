@@ -1,1 +1,0 @@
-# ecamara-mobile

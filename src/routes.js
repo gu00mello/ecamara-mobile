@@ -6,11 +6,17 @@ import Principal from "./pages/Principal";
 import Projeto from "./pages/Projeto";
 import RegistrarPresenca from "./pages/RegistrarPresenca";
 import RegistrarVoto from "./pages/RegistrarVoto";
+import VizualizarPauta from "./pages/VizualizarPauta";
 import PedirPalavra from "./pages/PedirPalavra";
+import Sair from "./pages/Sair";
+import PainelPresidente from "./pages/PainelPresidente/aa";
 
 const AppNavigator = createDrawerNavigator({
   Principal: {
-    screen: Principal
+    screen: Principal,
+    navigationOptions: {
+      drawerLabel: "Principal"
+    }
   },
   ProjetoDeLei: {
     screen: Projeto,
@@ -27,20 +33,38 @@ const AppNavigator = createDrawerNavigator({
   RegistrarPresenca: {
     screen: RegistrarPresenca,
     navigationOptions: {
-      drawerLabel: "Registrar Presença"
+      drawerLabel: () => null
     }
   },
   RegistrarVoto: {
     screen: RegistrarVoto,
     navigationOptions: {
-      drawerLabel: "Registrar Voto"
+      drawerLabel: () => null
     }
   },
   PedirPalavra: {
     screen: PedirPalavra,
     navigationOptions: {
-      drawerLabel: "Pedir Palavra"
+      drawerLabel: () => null
     }
+  },
+
+  VizualizarPauta: {
+    screen: VizualizarPauta,
+    navigationOptions: {
+      drawerLabel: () => null
+    }
+  },
+
+  PainelPresidente: {
+    screen: PainelPresidente,
+    navigationOptions: {
+      drawerLabel: "Painel Presidente"
+    }
+  },
+
+  Sair: {
+    screen: Sair
   }
 });
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Alert
 } from "react-native";
+import { getUserToken } from "../../services/auth";
 
 export default function PedirPalavra({ navigation }) {
   return (

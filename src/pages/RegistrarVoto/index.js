@@ -1,14 +1,59 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
   View,
   Image,
   ImageBackground,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert
 } from "react-native";
+import AppContext from "../../context";
+import { getProjeto } from "../../services/projeto";
+import { getUserData } from "../../services/auth";
+import api from "../../services/api";
 
 export default function RegistrarVoto({ navigation }) {
+  const { url: BASEURL } = useContext(AppContext);
+
+  const [parlamentar, setParlamentar] = useState({});
+  const [projeto, setProjeto] = useState(null);
+
+  useEffect(() => {
+    async function getParlametar() {
+      const isValue = await getUserData();
+      setParlamentar(isValue);
+    }
+
+    getParlametar();
+
+    async function getProject() {
+      const isProjetoAtual = await getProjeto();
+
+      const { data } = await api.get(
+        `http://${BASEURL}/materias/${isProjetoAtual}`
+      );
+
+      if (data.success) setProjeto(data.results);
+    }
+
+    getProject();
+  }, []);
+  const handleVoto = async param => {
+    const { data } = await api.post(`http://${BASEURL}/registrarVoto`, {
+      cod_parlament: parseInt(parlamentar.cod_parlament),
+      cod_sessao: parseInt(projeto.cod_materia),
+      cod_tpvoto: param
+    });
+
+    if (data.success) {
+      Alert.alert("Ecamara", "Voto registrado com sucesso");
+      navigation.navigate("Principal");
+    }
+  };
+
+  if (!projeto) return null;
+
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -60,7 +105,8 @@ export default function RegistrarVoto({ navigation }) {
             backgroundColor: "#fff"
           }}
         >
-          PROJETO DE LEI 0001/2019 - ASSUNTO: COLOCAÇÃO DE PLACAS E CARTAZES
+          PROJETO DE LEI {projeto.exercicio_mat}/{projeto.data_materia} -
+          ASSUNTO: {projeto.desc_materia}
         </Text>
 
         <View style={styles.principal}>
@@ -77,6 +123,7 @@ export default function RegistrarVoto({ navigation }) {
               marginTop: 20,
               marginBottom: 20
             }}
+            onPress={() => handleVoto(0)}
           >
             <Text
               style={{
@@ -100,6 +147,7 @@ export default function RegistrarVoto({ navigation }) {
               marginTop: 20,
               marginBottom: 20
             }}
+            onPress={() => handleVoto(1)}
           >
             <Text
               style={{
@@ -122,6 +170,7 @@ export default function RegistrarVoto({ navigation }) {
               marginTop: 20,
               marginBottom: 20
             }}
+            onPress={() => handleVoto(2)}
           >
             <Text
               style={{
@@ -142,7 +191,7 @@ export default function RegistrarVoto({ navigation }) {
             backgroundColor: "#fff"
           }}
         >
-          PARLAMENTAR: FRANCISCO DOS SANTOS - PCP
+          PARLAMENTAR: {parlamentar.nome_completo}
         </Text>
       </ImageBackground>
     </View>

@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useLayoutEffect, useState } from "react";
+import { NavigationEvents } from "react-navigation";
 import {
   StyleSheet,
   Text,
@@ -11,9 +12,10 @@ import { getUserToken } from "../../services/auth";
 
 export default function Principal({ navigation }) {
   const [visible, setVisible] = useState(false);
-  useEffect(() => {
+
+  useLayoutEffect(() => {
     async function verifySession() {
-      let token = getUserToken();
+      let token = await getUserToken();
 
       if (!token) {
         setVisible(true);
@@ -21,8 +23,11 @@ export default function Principal({ navigation }) {
     }
     verifySession();
   }, []);
+
   return (
     <View style={styles.container}>
+      {/* NavigationEvents - Muda evento da aplicação. */}
+      <NavigationEvents onDidFocus={() => setVisible(!visible)} />
       <ImageBackground
         source={require("../../../assets/bg-mobile.png")}
         style={{
@@ -66,7 +71,10 @@ export default function Principal({ navigation }) {
                 width: 155,
                 height: 100,
                 marginRight: 10,
-                shadowColor: "#333"
+                shadowColor: "#333",
+                borderWidth: 2,
+                borderColor: "#fff",
+                borderRadius: 3
               }}
               source={require("../../../assets/1.png")}
             />
@@ -75,30 +83,27 @@ export default function Principal({ navigation }) {
             onPress={() => {
               navigation.navigate("RegistrarVoto");
             }}
+            style={{
+              display: visible ? "none" : "flex"
+            }}
           >
             <Image
               style={{
                 width: 155,
                 height: 100,
                 marginRight: 10,
-                shadowColor: "#333"
+                shadowColor: "#333",
+                borderWidth: 2,
+                borderColor: "#fff",
+                borderRadius: 3
               }}
               source={require("../../../assets/2.png")}
             />
           </TouchableOpacity>
 
-          <Image
-            style={{
-              width: 155,
-              height: 100,
-              marginRight: 10,
-              shadowColor: "#333"
-            }}
-            source={require("../../../assets/3.png")}
-          />
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate("PedirPalavra");
+              navigation.navigate("VizualizarPauta");
             }}
           >
             <Image
@@ -106,9 +111,55 @@ export default function Principal({ navigation }) {
                 width: 155,
                 height: 100,
                 marginRight: 10,
-                shadowColor: "#333"
+                shadowColor: "#333",
+                borderWidth: 2,
+                borderColor: "#fff",
+                borderRadius: 3,
+                display: visible ? "none" : "flex"
+              }}
+              source={require("../../../assets/3.png")}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("PedirPalavra");
+            }}
+            style={{
+              display: visible ? "none" : "flex"
+            }}
+          >
+            <Image
+              style={{
+                width: 155,
+                height: 100,
+                marginRight: 10,
+                shadowColor: "#333",
+                borderWidth: 2,
+                borderColor: "#fff",
+                borderRadius: 3
               }}
               source={require("../../../assets/4.png")}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("PainelPresidente");
+            }}
+            style={{
+              display: visible ? "none" : "flex"
+            }}
+          >
+            <Image
+              style={{
+                width: 155,
+                height: 100,
+                marginRight: 10,
+                shadowColor: "#333",
+                borderWidth: 2,
+                borderColor: "#fff",
+                borderRadius: 3
+              }}
+              source={require("../../../assets/5.png")}
             />
           </TouchableOpacity>
         </View>
